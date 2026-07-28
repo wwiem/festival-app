@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLSTICE — Espace organisateur</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<style>
+  .admin-wrap{max-width:640px; margin:0 auto; padding:64px 32px;}
+  .admin-card{background:var(--paper); color:var(--ink); border-radius:10px; padding:32px;}
+  .admin-card label{display:block; font-size:12px; text-transform:uppercase; letter-spacing:0.08em; opacity:0.6; margin-bottom:6px; margin-top:18px;}
+  .admin-card input, .admin-card select, .admin-card textarea{
+    width:100%; background:#fff; border:1px solid rgba(20,21,31,0.2); border-radius:4px;
+    padding:10px; font-family:'Space Grotesk'; font-size:14px;
+  }
+  .admin-card textarea{min-height:90px; resize:vertical;}
+  .admin-card button{margin-top:24px; width:100%;}
+  .back-link{display:inline-block; margin-bottom:24px; font-size:13px; opacity:0.7;}
+  .back-link:hover{color:var(--lime);}
+  #adminMsg{margin-top:16px; font-size:13px;}
+  .history-item{border-bottom:1px solid var(--line); padding:14px 0; font-size:14px;}
+  .history-item .h-title{font-weight:700;}
+  .history-item .h-time{font-family:'JetBrains Mono',monospace; font-size:11px; opacity:0.5;}
+</style>
+</head>
+<body>
+<div class="admin-wrap">
+  <a class="back-link" href="/">← Retour au site</a>
+  <h2 style="font-size:34px; margin-bottom:24px;">Espace organisateur</h2>
+
+  <div class="admin-card">
+    <p style="font-size:13px; opacity:0.7;">Ce que tu publies ici apparaît instantanément (via WebSocket) chez tous les visiteurs qui ont le site ouvert, et reste dans l'historique pour les suivants.</p>
+
+    <label>Type</label>
+    <select id="notifType">
+      <option value="info">Information</option>
+      <option value="warning">Alerte météo / avertissement</option>
+      <option value="danger">Changement d'horaire / annulation</option>
+    </select>
+
+    <label>Titre</label>
+    <input type="text" id="notifTitle" placeholder="Ex : Changement d'horaire">
+
+    <label>Message</label>
+    <textarea id="notifMessage" placeholder="Ex : Karim Trio décalé à 20h30, Scène jardin."></textarea>
+
+    <button class="cta-btn" onclick="publish()">Publier à tous les visiteurs</button>
+    <p id="adminMsg"></p>
+  </div>
+
+  <h3 style="font-size:20px; margin:40px 0 10px;">Historique</h3>
+  <div id="history"></div>
+</div>
+
+<script>
+async function loadHistory() {
+  const res = await fetch('/api/notifications');
+  const items = await res.json();
+  document.getElementById('history').innerHTML = items.map(n => `
+    <div class="history-item">
+      <div class="h-title">${n.title}</div>
+      <div>${n.message}</div>
+      <div class="h-time">${new Date(n.createdAt).toLocaleString('fr-FR')}</div>
+    </div>
+  `).join('') || '<p style="opacity:0.5;">Aucune annonce publiée pour le moment.</p>';
+}
+
+async function publish() {
+  const type = document.getElementById('notifType').value;
+  const title = document.getElementById('notifTitle').value;
+  const message = document.getElementById('notifMessage').value;
+  const msgEl = document.getElementById('adminMsg');
+
+  const res = await fetch('/api/notifications', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type, title, message })
+  });
+  const data = await res.json();
+
+  if (!res.ok) {
+    msgEl.style.color = '#A32D2D';
+    msgEl.textContent = data.error || "Une erreur est survenue.";
+    return;
+  }
+
+  msgEl.style.color = '#1C9C8D';
+  msgEl.textContent = "Publié ! Les visiteurs connectés viennent de la recevoir.";
+  document.getElementById('notifTitle').value = '';
+  document.getElementById('notifMessage').value = '';
+  loadHistory();
+}
+
+loadHistory();
+</script>
+</body>
+</html>

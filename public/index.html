@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLSTICE — Festival des arts vivants</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+</head>
+<body>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<header>
+  <nav class="wrap" style="padding-left:0; padding-right:0;">
+    <div class="logo">SOL<span>·</span>STICE</div>
+    <div class="navlinks">
+      <a href="#programme">Programme</a>
+      <a href="#carte">Carte</a>
+      <a href="#avis">Avis</a>
+      <a href="#galerie">Galerie</a>
+    </div>
+    <div style="display:flex; align-items:center; gap:16px;">
+      <button class="bell-btn" id="bellBtn" onclick="toggleNotifPanel()" aria-label="Notifications">
+        🔔<span class="bell-dot" id="bellDot" style="display:none;"></span>
+      </button>
+      <button class="cta-btn" onclick="document.getElementById('programme').scrollIntoView()">Réserver</button>
+    </div>
+  </nav>
+
+  <div class="notif-panel" id="notifPanel">
+    <div class="notif-panel-head">
+      <span>Notifications</span>
+      <button onclick="toggleNotifPanel()" class="modal-close" style="position:static;">✕</button>
+    </div>
+    <div id="notifList"><p class="empty-msg">Aucune notification pour le moment.</p></div>
+  </div>
+  <div class="marquee-band">
+    <div class="marquee-track" id="marquee">
+      <span>22—24 AOÛT 2026</span><span>CITÉ DE LA CULTURE, TUNIS</span><span>+40 ARTISTES</span><span>3 SCÈNES</span><span>BILLETS DÈS 15 DT</span>
+      <span>22—24 AOÛT 2026</span><span>CITÉ DE LA CULTURE, TUNIS</span><span>+40 ARTISTES</span><span>3 SCÈNES</span><span>BILLETS DÈS 15 DT</span>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-orb"></div>
+  <div class="wrap">
+    <div class="hero-eyebrow">Édition 2026 — 3 jours, 3 scènes</div>
+    <h1>Vivre l'<em>art</em><br>sans détour</h1>
+    <p class="hero-sub">Musique, danse, arts visuels et gastronomie réunis pendant trois nuits. Construis ton programme, réserve ta place, partage l'instant.</p>
+    <div class="hero-meta">
+      <div><div class="label">Dates</div><div class="value">22 — 24 Août</div></div>
+      <div><div class="label">Lieu</div><div class="value">Cité de la Culture</div></div>
+      <div><div class="label">Artistes</div><div class="value">40+</div></div>
+    </div>
+    <div class="hero-actions">
+      <button class="cta-btn" onclick="document.getElementById('programme').scrollIntoView()">Voir le programme</button>
+      <button class="cta-outline" onclick="document.getElementById('galerie').scrollIntoView()">Galerie photo</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROGRAMME ============ -->
+<section class="section" id="programme">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-tag">01 — Le programme</div>
+        <h2>Trois nuits,<br>quarante voix.</h2>
+      </div>
+      <p class="section-desc">Filtre par discipline ou par jour, ajoute un événement à ton planning et réserve ta place en un clic.</p>
+    </div>
+
+    <div class="day-tabs" id="dayTabs">
+      <div class="day-tab active" data-day="1">Jour 1 · Ven 22</div>
+      <div class="day-tab" data-day="2">Jour 2 · Sam 23</div>
+      <div class="day-tab" data-day="3">Jour 3 · Dim 24</div>
+    </div>
+
+    <div class="filters" id="catFilters">
+      <button class="filter-btn active" data-cat="all">Tout</button>
+      <button class="filter-btn" data-cat="musique">Musique</button>
+      <button class="filter-btn" data-cat="danse">Danse</button>
+      <button class="filter-btn" data-cat="arts">Arts visuels</button>
+      <button class="filter-btn" data-cat="gastro">Gastronomie</button>
+    </div>
+
+    <div class="ticket-grid" id="ticketGrid">
+      <p class="empty-msg">Chargement du programme…</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CARTE ============ -->
+<section class="section" id="carte">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-tag">02 — Se repérer</div>
+        <h2>Où es-tu,<br>où vas-tu ?</h2>
+      </div>
+      <p class="section-desc">Active ta position pour te situer sur le site, puis trace un itinéraire vers une scène ou un stand.</p>
+    </div>
+
+    <div class="map-toolbar">
+      <button class="cta-btn" id="locateBtn" onclick="locateMe()">📍 Me localiser</button>
+      <div class="map-legend">
+        <span><i class="dot dot-scene"></i>Scènes</span>
+        <span><i class="dot dot-food"></i>Nourriture</span>
+        <span><i class="dot dot-wc"></i>Toilettes</span>
+        <span><i class="dot dot-secours"></i>Secours</span>
+        <span><i class="dot dot-sortie"></i>Sortie</span>
+      </div>
+    </div>
+    <p class="modal-error" id="mapError" style="display:none;"></p>
+
+    <div id="map"></div>
+  </div>
+</section>
+
+<!-- ============ AVIS ============ -->
+<section class="section" id="avis">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-tag">03 — La parole au public</div>
+        <h2>Ce qu'on<br>en a pensé.</h2>
+      </div>
+      <p class="section-desc">Note un spectacle et laisse un mot — chaque avis aide les prochains festivaliers à composer leur soirée.</p>
+    </div>
+
+    <div class="reviews-layout">
+      <div class="reviews-summary">
+        <div class="avg-score" id="avgScore">—</div>
+        <div class="avg-stars" id="avgStars">☆☆☆☆☆</div>
+        <div class="avg-count" id="avgCount">0 avis</div>
+
+        <div class="write-review">
+          <p>Laisser un avis</p>
+          <input type="text" id="reviewName" placeholder="Ton prénom">
+          <input type="text" id="reviewEvent" placeholder="Spectacle concerné (optionnel)">
+          <div class="star-picker" id="starPicker">
+            <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+          </div>
+          <textarea id="reviewText" placeholder="Ton ressenti sur un spectacle..."></textarea>
+          <p class="modal-error" id="reviewError" style="display:none;"></p>
+          <button class="cta-btn" style="width:100%;" onclick="submitReview()">Publier</button>
+        </div>
+      </div>
+
+      <div class="review-cards" id="reviewCards">
+        <p class="empty-msg">Chargement des avis…</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALERIE ============ -->
+<section class="section" id="galerie" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-tag">04 — Vu par vous</div>
+        <h2>La mémoire<br>collective.</h2>
+      </div>
+      <p class="section-desc">Partage tes photos du festival, elles rejoignent le mur communautaire en direct.</p>
+    </div>
+
+    <div class="gallery-toolbar">
+      <span class="hashtag-pill">#SolsticeFest2026</span>
+      <input type="file" id="photoInput" accept="image/png, image/jpeg, image/webp, image/gif" style="display:none;">
+    </div>
+
+    <p class="modal-error" id="uploadError" style="display:none;"></p>
+
+    <div class="masonry" id="masonry">
+      <p class="empty-msg">Chargement de la galerie…</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-logo">SOLSTICE<br>Festival des arts vivants</div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <p>Explorer</p>
+          <a href="#programme">Programme</a>
+          <a href="#avis">Avis</a>
+          <a href="#galerie">Galerie</a>
+        </div>
+        <div class="footer-col">
+          <p>Infos</p>
+          <a href="#">Accès & plan</a>
+          <a href="#">Billetterie</a>
+          <a href="#">Contact</a>
+          <a href="/admin.html">Espace organisateur</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Festival Solstice — Cité de la Culture, Tunis</span>
+      <span>Site conçu pour l'édition 2026</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ MODAL RÉSERVATION ============ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalBooking">
+      <div class="modal-tag">Réservation</div>
+      <h3 id="modalTitle">Événement</h3>
+      <p class="modal-info" id="modalInfo">Détails</p>
+      <div class="qty-row">
+        <span>Places</span>
+        <div class="qty-controls">
+          <button onclick="changeQty(-1)">−</button>
+          <span id="qtyVal" class="mono">1</span>
+          <button onclick="changeQty(1)">+</button>
+        </div>
+      </div>
+      <div class="modal-total"><span>Total</span><span id="modalTotal" class="mono">0 DT</span></div>
+      <p class="modal-error" id="modalError" style="display:none;"></p>
+      <button class="modal-confirm" onclick="confirmBooking()">Confirmer la réservation</button>
+    </div>
+    <div class="modal-success" id="modalSuccess">
+      <div class="modal-tag">Réservation confirmée</div>
+      <h3>C'est réservé</h3>
+      <p class="modal-info">Présente ce billet à l'entrée</p>
+      <div class="qr"></div>
+      <p class="mono" style="font-size:12px; opacity:0.6;" id="ticketCode">—</p>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

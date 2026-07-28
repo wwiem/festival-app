@@ -1,0 +1,40 @@
+{
+  "events": [
+    { "id": 1, "day": 1, "cat": "musique", "time": "19:00", "title": "Nour Ensemble", "loc": "Scène principale — Amphithéâtre", "price": 25, "seatsLeft": 120, "placeId": 1 },
+    { "id": 2, "day": 1, "cat": "danse", "time": "20:30", "title": "Corps Fluides", "loc": "Scène jardin — Plein air", "price": 30, "seatsLeft": 80, "placeId": 2 },
+    { "id": 3, "day": 1, "cat": "arts", "time": "18:00", "title": "Fresques Vivantes", "loc": "Hall d'exposition", "price": 15, "seatsLeft": 200, "placeId": 3 },
+    { "id": 4, "day": 2, "cat": "musique", "time": "20:00", "title": "Karim Trio", "loc": "Scène jardin", "price": 25, "seatsLeft": 95, "placeId": 2 },
+    { "id": 5, "day": 2, "cat": "gastro", "time": "19:00", "title": "Table Nomade", "loc": "Cour des saveurs", "price": 40, "seatsLeft": 50, "placeId": 6 },
+    { "id": 6, "day": 2, "cat": "musique", "time": "22:00", "title": "DJ Set — Yasmine", "loc": "Zone club", "price": 20, "seatsLeft": 150, "placeId": 1 },
+    { "id": 7, "day": 3, "cat": "danse", "time": "18:30", "title": "Rites Contemporains", "loc": "Scène principale", "price": 30, "seatsLeft": 90, "placeId": 1 },
+    { "id": 8, "day": 3, "cat": "arts", "time": "17:00", "title": "Lumières Suspendues", "loc": "Jardin des sculptures", "price": 15, "seatsLeft": 200, "placeId": 3 }
+  ],
+  "reservations": [],
+  "reviews": [
+    { "id": 1, "name": "Amira B.", "rating": 5, "event": "Nour Ensemble — Scène principale", "text": "Le son de l'oud résonnait encore dans mes oreilles bien après la fin. Une entrée en matière parfaite pour l'édition." },
+    { "id": 2, "name": "Youssef K.", "rating": 4, "event": "Corps Fluides — Scène jardin", "text": "Chorégraphie audacieuse, un peu longue sur la fin mais visuellement superbe en plein air." },
+    { "id": 3, "name": "Sarra M.", "rating": 5, "event": "Table Nomade — Cour des saveurs", "text": "L'expérience culinaire mérite autant d'attention que les concerts. Une vraie découverte." }
+  ],
+  "photos": [
+    { "id": 1, "user": "@amira.b", "colorA": "#7C5CFF", "colorB": "#14151F", "height": 260, "likes": 24, "liked": false },
+    { "id": 2, "user": "@youssef.k", "colorA": "#FF5A3C", "colorB": "#14151F", "height": 170, "likes": 12, "liked": false },
+    { "id": 3, "user": "@sarra.m", "colorA": "#1C9C8D", "colorB": "#14151F", "height": 220, "likes": 41, "liked": false },
+    { "id": 4, "user": "@mehdi.t", "colorA": "#D4FF3D", "colorB": "#14151F", "height": 200, "likes": 8, "liked": false },
+    { "id": 5, "user": "@lina.z", "colorA": "#7C5CFF", "colorB": "#FF5A3C", "height": 280, "likes": 63, "liked": false },
+    { "id": 6, "user": "@karim.r", "colorA": "#1C9C8D", "colorB": "#D4FF3D", "height": 190, "likes": 19, "liked": false }
+  ],
+  "notifications": [
+    { "id": 1, "type": "info", "title": "Bienvenue", "message": "L'application Solstice est prête. Bon festival !", "createdAt": "2026-08-20T10:00:00.000Z" }
+  ],
+  "places": [
+    { "id": 1, "name": "Scène principale", "type": "scene", "lat": 36.8065, "lng": 10.1815 },
+    { "id": 2, "name": "Scène jardin", "type": "scene", "lat": 36.8071, "lng": 10.1826 },
+    { "id": 3, "name": "Hall d'exposition / Jardin des sculptures", "type": "arts", "lat": 36.8059, "lng": 10.1830 },
+    { "id": 4, "name": "Stand nourriture", "type": "food", "lat": 36.8068, "lng": 10.1808 },
+    { "id": 5, "name": "Toilettes", "type": "wc", "lat": 36.8062, "lng": 10.1822 },
+    { "id": 6, "name": "Cour des saveurs", "type": "food", "lat": 36.8074, "lng": 10.1812 },
+    { "id": 7, "name": "Poste de secours", "type": "secours", "lat": 36.8066, "lng": 10.1834 },
+    { "id": 8, "name": "Sortie principale", "type": "sortie", "lat": 36.8055, "lng": 10.1815 }
+  ],
+  "plannings": {}
+}
