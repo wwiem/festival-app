@@ -33,6 +33,22 @@ io.on('connection', async (socket) => {
   }
 });
 
+// ---------- DIAGNOSTIC TEMPORAIRE ----------
+// Route de dépannage : ne révèle aucun secret, juste si les variables
+// sont détectées et quel mode de stockage est actif. À supprimer une
+// fois que tout fonctionne, si tu veux.
+app.get('/api/debug', (req, res) => {
+  res.json({
+    storeMode: store.mode,
+    photoMode: photoStore.mode,
+    hasMongoUri: !!process.env.MONGODB_URI,
+    mongoUriLength: process.env.MONGODB_URI ? process.env.MONGODB_URI.length : 0,
+    hasCloudinaryCloudName: !!process.env.CLOUDINARY_CLOUD_NAME,
+    hasCloudinaryApiKey: !!process.env.CLOUDINARY_API_KEY,
+    hasCloudinaryApiSecret: !!process.env.CLOUDINARY_API_SECRET
+  });
+});
+
 // ---------- ÉVÉNEMENTS ----------
 
 app.get('/api/events', async (req, res) => {
