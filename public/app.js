@@ -336,12 +336,8 @@ photoInput.addEventListener('change', async () => {
 });
 
 // ---------- INITIALISATION ----------
-
-loadEvents();
-loadReviews();
-loadPhotos();
-initMap();
-initNotifications();
+// (déplacée tout en bas du fichier — voir la fin — pour éviter toute
+// erreur liée à l'ordre de déclaration des variables de la carte)
 
 // ---------- CARTE INTERACTIVE ----------
 
@@ -477,3 +473,13 @@ function showToast(notif) {
   stack.appendChild(toast);
   setTimeout(() => toast.remove(), 6000);
 }
+
+// ---------- LANCEMENT ----------
+// Placé ici, tout en bas, une fois que toutes les variables (map,
+// userMarker, places...) et fonctions ont bien été déclarées.
+
+loadEvents();
+loadReviews();
+loadPhotos();
+initMap();
+initNotifications();

@@ -232,7 +232,6 @@ footer{padding:60px 0 40px;}
 .dot-sortie{background:var(--paper);}
 #map{
   height:420px; border-radius:10px; overflow:hidden; border:1px solid var(--line);
-  filter:grayscale(0.15) contrast(1.05);
 }
 .leaflet-popup-content-wrapper{background:var(--paper); color:var(--ink); border-radius:8px;}
 .leaflet-popup-content{font-family:'Space Grotesk', sans-serif; font-size:13px;}
